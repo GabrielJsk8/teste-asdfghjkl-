@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>psique.anime</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --purple-50: #EEEDFE;
+      --purple-200: #AFA9EC;
+      --purple-400: #7F77DD;
+      --purple-600: #534AB7;
+      --purple-900: #26215C;
+      --coral-50: #FAECE7;
+      --coral-600: #993C1D;
+      --teal-50: #E1F5EE;
+      --teal-600: #0F6E56;
+      --text-primary: #1a1a1a;
+      --text-secondary: #555;
+      --text-muted: #999;
+      --border: rgba(0,0,0,0.08);
+      --bg: #fafaf8;
+      --bg-card: #fff;
+      --radius: 14px;
+      --font-display: 'DM Serif Display', Georgia, serif;
+      --font-body: 'DM Sans', system-ui, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text-primary);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 2.5rem;
+      background: rgba(250,250,248,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo {
+      font-family: var(--font-display);
+      font-size: 22px;
+      color: var(--text-primary);
+      letter-spacing: -0.5px;
+    }
+    .logo em { color: var(--purple-400); font-style: normal; }
+    .nav-links { display: flex; gap: 2rem; }
+    .nav-links a {
+      font-size: 13px; font-weight: 400;
+      color: var(--text-secondary); text-decoration: none;
+      letter-spacing: 0.2px;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text-primary); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 92vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 5rem 2rem 4rem;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 50% 60%, rgba(127,119,221,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-pill {
+      font-size: 11px; font-weight: 500;
+      letter-spacing: 0.8px; text-transform: uppercase;
+      background: var(--purple-50); color: var(--purple-600);
+      padding: 5px 14px; border-radius: 20px;
+      margin-bottom: 1.5rem; display: inline-block;
+    }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 6vw, 58px);
+      font-weight: 400;
+      line-height: 1.15;
+      max-width: 620px;
+      margin-bottom: 1.25rem;
+      color: var(--text-primary);
+    }
+    .hero h1 em {
+      color: var(--purple-400);
+      font-style: italic;
+    }
+    .hero p {
+      font-size: 16px; font-weight: 300;
+      color: var(--text-secondary);
+      max-width: 420px; line-height: 1.75;
+      margin-bottom: 2.5rem;
+    }
+    .hero-btn {
+      font-family: var(--font-body);
+      font-size: 13px; font-weight: 500;
+      padding: 11px 28px;
+      border: 1px solid rgba(83,74,183,0.35);
+      border-radius: 40px;
+      color: var(--purple-600);
+      background: var(--purple-50);
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+      text-decoration: none;
+    }
+    .hero-btn:hover { background: var(--purple-200); border-color: var(--purple-400); }
+    .scroll-hint {
+      position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px;
+    }
+    .chevron {
+      width: 10px; height: 10px;
+      border-right: 1.5px solid var(--text-muted);
+      border-bottom: 1.5px solid var(--text-muted);
+      transform: rotate(45deg);
+      animation: bob 1.8s ease-in-out infinite;
+    }
+    @keyframes bob {
+      0%, 100% { transform: rotate(45deg) translateY(0); }
+      50%       { transform: rotate(45deg) translateY(5px); }
+    }
+
+    /* ── SECTIONS ── */
+    section { padding: 5rem 2.5rem; border-bottom: 1px solid var(--border); }
+    .section-label {
+      font-size: 10px; font-weight: 500;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--text-muted); margin-bottom: 2.5rem;
+    }
+    .inner { max-width: 760px; margin: 0 auto; }
+
+    /* ── REVEAL ── */
+    .r {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .r.d1 { transition-delay: 0.1s; }
+    .r.d2 { transition-delay: 0.2s; }
+    .r.d3 { transition-delay: 0.3s; }
+    .r.on { opacity: 1; transform: translateY(0); }
+
+    /* ── FEATURED ── */
+    .feat {
+      background: var(--purple-50);
+      border: 1px solid var(--purple-200);
+      border-radius: var(--radius);
+      padding: 2.5rem 3rem;
+    }
+    .feat-tag {
+      font-size: 11px; font-weight: 500;
+      background: var(--purple-200); color: var(--purple-900);
+      padding: 3px 10px; border-radius: 20px;
+      display: inline-block; margin-bottom: 1rem;
+    }
+    .feat h2 {
+      font-family: var(--font-display);
+      font-size: 26px; font-weight: 400;
+      color: var(--purple-900); line-height: 1.3;
+      margin-bottom: 1rem;
+    }
+    .feat p { font-size: 14px; color: var(--purple-600); line-height: 1.75; }
+    .feat-meta { margin-top: 1.25rem; font-size: 12px; color: var(--purple-400); }
+    .feat-link {
+      display: inline-block; margin-top: 1.5rem;
+      font-size: 13px; font-weight: 500; color: var(--purple-600);
+      text-decoration: none; border-bottom: 1px solid var(--purple-200);
+      padding-bottom: 1px; transition: border-color 0.2s;
+    }
+    .feat-link:hover { border-color: var(--purple-600); }
+
+    /* ── CATEGORIES ── */
+    .cats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+    }
+    .cat {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem 1.25rem;
+      background: var(--bg-card);
+      cursor: default;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .cat:hover { border-color: var(--purple-200); transform: translateY(-2px); }
+    .cat-icon { font-size: 22px; margin-bottom: 0.75rem; display: block; }
+    .cat h3 { font-size: 14px; font-weight: 500; margin-bottom: 0.4rem; color: var(--text-primary); }
+    .cat p { font-size: 12px; color: var(--text-secondary); line-height: 1.55; }
+
+    /* ── ARTICLES ── */
+    .art {
+      display: flex; justify-content: space-between;
+      align-items: flex-start; gap: 1.25rem;
+      padding: 1.4rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .art:last-child { border-bottom: none; }
+    .at {
+      font-size: 10px; font-weight: 500;
+      padding: 2px 9px; border-radius: 20px;
+      display: inline-block; margin-bottom: 0.5rem;
+      letter-spacing: 0.3px;
+    }
+    .at.psi   { background: var(--purple-50); color: var(--purple-600); }
+    .at.anime { background: var(--coral-50);  color: var(--coral-600);  }
+    .at.mix   { background: var(--teal-50);   color: var(--teal-600);   }
+    .art h3 {
+      font-size: 15px; font-weight: 500;
+      color: var(--text-primary); line-height: 1.4;
+      margin-bottom: 0.35rem;
+    }
+    .art p { font-size: 13px; color: var(--text-secondary); line-height: 1.55; }
+    .art-min { font-size: 11px; color: var(--text-muted); white-space: nowrap; padding-top: 6px; }
+
+    /* ── NEWSLETTER ── */
+    .nl {
+      text-align: center; max-width: 480px; margin: 0 auto;
+    }
+    .nl h2 {
+      font-family: var(--font-display);
+      font-size: 30px; font-weight: 400;
+      color: var(--text-primary); margin-bottom: 0.75rem;
+    }
+    .nl p {
+      font-size: 14px; font-weight: 300;
+      color: var(--text-secondary); line-height: 1.7;
+      margin-bottom: 1.75rem;
+    }
+    .nl-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+    .nl-row input {
+      flex: 1; min-width: 200px; max-width: 260px;
+      font-family: var(--font-body);
+      font-size: 13px; padding: 10px 16px;
+      border: 1px solid var(--border); border-radius: 40px;
+      background: var(--bg-card); color: var(--text-primary);
+      outline: none; transition: border-color 0.2s;
+    }
+    .nl-row input:focus { border-color: var(--purple-400); }
+    .nl-row button {
+      font-family: var(--font-body);
+      font-size: 13px; font-weight: 500;
+      padding: 10px 22px; border-radius: 40px;
+      background: var(--purple-400); color: #fff;
+      border: none; cursor: pointer;
+      transition: background 0.2s;
+    }
+    .nl-row button:hover { background: var(--purple-600); }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 1.75rem 2.5rem;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 0.5rem;
+    }
+    footer p { font-size: 12px; color: var(--text-muted); }
+    footer a { color: var(--text-muted); text-decoration: none; margin-left: 1rem; transition: color 0.2s; }
+    footer a:hover { color: var(--text-primary); }
+
+    @media (max-width: 600px) {
+      nav { padding: 1rem 1.25rem; }
+      .nav-links { gap: 1.25rem; }
+      section { padding: 4rem 1.25rem; }
+      .feat { padding: 1.75rem; }
+      footer { padding: 1.5rem 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="logo">psique<em>.</em>anime</span>
+  <div class="nav-links">
+    <a href="#">Artigos</a>
+    <a href="#">Séries</a>
+    <a href="#">Sobre</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <span class="hero-pill">onde a mente encontra o mangá</span>
+  <h1>Psicologia através dos <em>olhos do anime</em></h1>
+  <p>Exploramos traumas, arquétipos e crescimento humano nas histórias que nos formaram.</p>
+  <a href="#destaque" class="hero-btn">Começar a ler</a>
+  <div class="scroll-hint">
+    <span>role para baixo</span>
+    <div class="chevron"></div>
+  </div>
+</section>
+
+<!-- DESTAQUE -->
+<section id="destaque">
+  <div class="inner">
+    <p class="section-label">Destaque da semana</p>
+    <div class="r feat">
+      <span class="feat-tag">psicologia + anime</span>
+      <h2>O PTSD de Shinji Ikari e o que Evangelion nos diz sobre dissociação</h2>
+      <p>Como Hideaki Anno retratou seu próprio colapso emocional através da animação — e o que a psicologia clínica tem a dizer sobre os mecanismos de defesa de Shinji.</p>
+      <p class="feat-meta">8 min de leitura · Trauma &amp; Identidade</p>
+      <a href="#" class="feat-link">Ler artigo →</a>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORIAS -->
+<section>
+  <div class="inner">
+    <p class="section-label">Explore por categoria</p>
+    <div class="cats">
+      <div class="r cat">
+        <span class="cat-icon">🧠</span>
+        <h3>Psicologia</h3>
+        <p>Conceitos clínicos explicados de forma acessível e humana.</p>
+      </div>
+      <div class="r d1 cat">
+        <span class="cat-icon">⛩</span>
+        <h3>Análise de anime</h3>
+        <p>Leituras profundas de personagens e narrativas.</p>
+      </div>
+      <div class="r d2 cat">
+        <span class="cat-icon">✦</span>
+        <h3>Psicologia + anime</h3>
+        <p>Onde os dois mundos se encontram — o melhor do blog.</p>
+      </div>
+      <div class="r d3 cat">
+        <span class="cat-icon">📖</span>
+        <h3>Séries especiais</h3>
+        <p>Conteúdos em múltiplas partes sobre um tema.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ARTIGOS -->
+<section>
+  <div class="inner">
+    <p class="section-label">Artigos recentes</p>
+
+    <div class="r art">
+      <div>
+        <span class="at psi">psicologia</span>
+        <h3>Apego ansioso e os relacionamentos em Toradora</h3>
+        <p>Como os estilos de apego moldam cada personagem — e por que Taiga age do jeito que age.</p>
+      </div>
+      <span class="art-min">5 min</span>
+    </div>
+
+    <div class="r d1 art">
+      <div>
+        <span class="at anime">análise</span>
+        <h3>A sombra junguiana em Fullmetal Alchemist</h3>
+        <p>Edward e a recusa em aceitar a perda: um percurso pelo arquétipo da sombra de Jung.</p>
+      </div>
+      <span class="art-min">7 min</span>
+    </div>
+
+    <div class="r d2 art">
+      <div>
+        <span class="at mix">desenvolvimento</span>
+        <h3>Crescimento pós-traumático: o que Demon Slayer ensina</h3>
+        <p>Tanjiro como exemplo real de resiliência e o que a psicologia positiva diz sobre isso.</p>
+      </div>
+      <span class="art-min">6 min</span>
+    </div>
+
+    <div class="r d3 art">
+      <div>
+        <span class="at psi">psicologia</span>
+        <h3>Narcisismo e poder em Death Note: quem é Light Yagami?</h3>
+        <p>Uma análise do transtorno narcisista de personalidade através do arco de Light.</p>
+      </div>
+      <span class="art-min">9 min</span>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section>
+  <div class="inner">
+    <div class="r nl">
+      <h2>Receba novos artigos</h2>
+      <p>Uma vez por semana, um artigo direto no seu e-mail. Sem spam — só conteúdo que vale a pena.</p>
+      <div class="nl-row">
+        <input type="email" placeholder="seu@email.com" />
+        <button type="button">Inscrever</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>psique.anime · 2025</p>
+  <p>
+    <a href="#">newsletter</a>
+    <a href="#">instagram</a>
+    <a href="#">contato</a>
+  </p>
+</footer>
+
+<script>
+  const items = document.querySelectorAll('.r');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('on');
+    });
+  }, { threshold: 0.12 });
+  items.forEach(el => obs.observe(el));
+</script>
+
+</body>
+</html>
